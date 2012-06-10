@@ -25,6 +25,11 @@ metric.euclid <- function(v1,v2) {
 # RETURN odległość pomiędzy wektorami wyrażona kontem  
 #
 metric.cos <- function(v1,v2) {
+print("metric cos")
+print(length(v1))
+print(length(v2))
+  print (v1)
+print(v2)
   return ((sum (v1*v2)) / (sqrt (sum (v1^2)) * sqrt (sum (v2^2))))
 }
 
@@ -87,11 +92,10 @@ predict.ptmKnn <- function(model, data) {
   apply.metric <- function (v1,v2,metric){
     mock.v2 <- data.frame (id=v2$id, count=v2$count*0)
     m.v1 <- match(v1$id, v2$id)
-    c.v1 <- rbind (v1[is.na(m.v1),], v1[!is.na(m.v1),], mock.v2[-m.v1[!is.na(m.v1)],])
+    c.v1 <- rbind (v1[is.na(m.v1),], v1[!is.na(m.v1),], mock.v2[-append(m.v1[!is.na(m.v1)], nrow(v2)+1),])
     mock.v1 <- data.frame (id=v1$id, count=v1$count*0)
     m.v2 <- match (v2$id, v1$id)
-    c.v2 <- rbind (mock.v1[-m.v2[!is.na(m.v2)],], v2[is.na(m.v2),], v2[!is.na(m.v2),])
-
+    c.v2 <- rbind (mock.v1[-append(m.v2[!is.na(m.v2)], nrow(v1)+1),], v2[is.na(m.v2),], v2[!is.na(m.v2),])
     return (metric (c.v1, c.v2))
   }
 
